@@ -3,16 +3,11 @@ import EnemyController from "./EnemyController";
 import Tool from "../Utils/Tool";
 import SceneManager from "../Utils/SceneManager/SceneManager";
 import EnemyBallLogic from "./EnemyBallLogic";
+import DataTable from "../Utils/DataLoader/DataTable";
+import GamePlay from "../Play/GamePlay";
+import { RefreshDTItem, MonsterDTItem } from "../Utils/DataLoader/DataClasses";
+import { gen_handler } from "../Utils/Utils";
 
-// Learn TypeScript:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
-// Learn Attribute:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 const { ccclass, property } = cc._decorator;
 
@@ -21,12 +16,13 @@ export default class EnemySpawner extends cc.Component {
 
     width = 350;
     height = 800;
-    spawn = false;
 
     enemyPoint: cc.Node = null;
     player: cc.Node = null;
 
+    enemyBalls: EnemyBallLogic[] = [];
     enemyBallMap: Map<number, EnemyBallLogic>;
+    monsters: cc.Node[] = [];
     // onLoad () {}
 
     start() {
@@ -36,21 +32,63 @@ export default class EnemySpawner extends cc.Component {
 
     update() {
         if (ObjectPool.instance.inited && !this.spawn) {
-            // this.startSpawn();
-            this.schedule(this.startSpawn, 1);
-            this.spawn = true;
+
+            // this.schedule(this.startSpawn, 1);
+            // this.spawn = true;
         }
     }
 
     startSpawn() {
-        // let ob = ObjectPool.instance.getObject("ball");
-        // ob.parent = this.enemyPoint;
-        // let c = ob.getComponent(EnemyController);
-        // c.player = this.player;
-        // ob.position = cc.v2(-157 + Tool.getRandomFloatNum(0, this.width), -400 + Tool.getRandomFloatNum(0, this.height));
+        // this.schedule(this.spawnBall, 5);
+        // this.spawnMonster();
+    }
 
+    spawnMonster() {
+        let refreshData = DataTable.RefreshDT.getData(GamePlay.Instance.cur_stage.stageData.spawn);
+        for (let i = 0; i < refreshData.length; i++) {
+            this.scheduleOnce(() => {
+                this.spawn(refreshData[i]);
+            }, refreshData[i].time)
+        }
+    }
+
+    spawnBall() {
         let id = Date.now();
-        this.enemyBallMap[id] = new EnemyBallLogic(id);
-        this.enemyBallMap[id].spawn(this.enemyPoint, this.player, cc.v2(-157 + Tool.getRandomFloatNum(0, this.width), -400 + Tool.getRandomFloatNum(0, this.height)));
+        // this.enemyBallMap[id] = new EnemyBallLogic(id);
+        // this.enemyBallMap[id].spawn(this.enemyPoint, this.player, cc.v2(-157 + Tool.getRandomFloatNum(0, this.width), -400 + Tool.getRandomFloatNum(0, this.height)));
+        let enemy = new EnemyBallLogic(id);
+        this.enemyBalls.push(enemy);
+        enemy.spawn(this.enemyPoint, this.player, cc.v2(-157 + Tool.getRandomFloatNum(0, this.width), -400 + Tool.getRandomFloatNum(0, this.height)));
+    }
+
+    spawn(data: RefreshDTItem) {
+        let monster: MonsterDTItem = DataTable.MonsterDT.getData(data.monsterID);
+        ObjectPool.instance.showEntity(monster.path, monster.name, gen_handler((_node: cc.Node) => {
+            _node.parent = SceneManager.Instance.sceneObjects;
+            _node.active = true;
+            if (data.random) {
+                _node.position = cc.v2(-157 + Tool.getRandomFloatNum(0, this.width), -400 + Tool.getRandomFloatNum(0, this.height));
+            } else {
+                _node.position = cc.v2(data.posX, data.posY);
+            }
+            this.monsters.push(_node);
+        }, this));
+    }
+
+    stopSpawn() {
+        // this.unschedule(this.spawnBall);
+        this.unscheduleAllCallbacks();
+    }
+
+    clear() {
+        for (let i = 0; i < this.enemyBalls.length; i++) {
+            this.enemyBalls[i].die();
+        }
+        this.enemyBalls = [];
+
+        for (let i = 0; i < this.monsters.length; i++){
+            ObjectPool.instance.returnPool(this.monsters[i]);
+        }
+        this.monsters = [];
     }
 }

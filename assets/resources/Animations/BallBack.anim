@@ -1,0 +1,145 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "BallBack",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "paths": {
+      "ball1": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                -140,
+                307
+              ]
+            }
+          ]
+        }
+      },
+      "ball2": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                -100,
+                307
+              ]
+            }
+          ]
+        }
+      },
+      "ball3": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                -60,
+                307
+              ]
+            }
+          ]
+        }
+      },
+      "ball4": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                -20,
+                307
+              ]
+            }
+          ]
+        }
+      },
+      "ball5": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                20,
+                307
+              ]
+            }
+          ]
+        }
+      },
+      "ball6": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                60,
+                307
+              ]
+            }
+          ]
+        }
+      },
+      "ball7": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                100,
+                307
+              ]
+            }
+          ]
+        }
+      },
+      "ball8": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                140,
+                307
+              ]
+            }
+          ]
+        }
+      },
+      "ball0": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                -180,
+                307
+              ]
+            }
+          ]
+        }
+      },
+      "ball9": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                180,
+                307
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}

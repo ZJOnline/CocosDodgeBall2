@@ -1,6 +1,6 @@
-export class event_mgr
+export class EventMgr
 {
-    private static inst:event_mgr;
+    private static inst:EventMgr;
     private listeners:any;          //Event_Name => cb[]
 
     private constructor()
@@ -8,11 +8,11 @@ export class event_mgr
         this.listeners = {};
     }
 
-    static get_inst():event_mgr
+    static get Instance():EventMgr
     {
         if(!this.inst)
         {
-            this.inst = new event_mgr();
+            this.inst = new EventMgr();
         }
         return this.inst;
     }
@@ -52,7 +52,7 @@ export class event_mgr
         let index:number = cbs.indexOf(cb);
         if(index < 0)
         {
-            cc.warn("event_mgr remove", event, ", but cb not exists!");
+            cc.warn("EventMgr remove", event, ", but cb not exists!");
             return;
         }
         cbs.splice(index, 2);
@@ -81,4 +81,12 @@ export enum Event_Name {
     LEVEL_DATA_LOADED,
     MUTE_MUSIC,
     UNMUTE_MUSIC,
+    SWITCH_BG,
+    MOVE_DOOR,
+    ENTER_STAGE,
+    GAME_OVER,
+    TRIGGER_ENTER,
+    GOTO_NEXT_STAGE,
+    RETURN_HOME,
+    RESTART_STAGE,
 }

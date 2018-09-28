@@ -1,3 +1,5 @@
+import GameManager from "../Logic/GameManager";
+
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -26,28 +28,6 @@ export default class Tool {
         return (min + Rand * Range);
     }
 
-    static setNodeActive(_node: cc.Node, b: boolean) {
-        if (_node.active != b) {
-            _node.active = b;
-        }
-    }
-
-    /**
-     * 获取子节点上的组件
-     * @param path 路径
-     * @param parent 父节点
-     * @param type 组件类型
-     */
-    static findChildComponent<T extends cc.Component>(path: string, parent: cc.Node, type: { prototype: T }) {
-        let child = cc.find(path, parent);
-        if (child == null || child == undefined) {
-            this.log("can't find ", path);
-            return null;
-        }
-        let resoult = child.getComponent(type);
-        return resoult;
-    }
-
     static log(message?: any, ...optionalParams: any[]) {
         if (this.writeLog) {
             console.log(message, optionalParams);
@@ -65,5 +45,17 @@ export default class Tool {
         result = tem * t;
         result = result + start;
         return result;
+    }
+
+    static encryptStr(str:string) {
+        let fun = require('../Utils/XXTeaJs');
+        str = fun.encrypt(str, GameManager.Instance.m_GameData.encryptKey);
+        return str;
+    }
+    
+    static decryptStr(str:string) {
+        let fun = require('../Utils/XXTeaJs');
+        str = fun.decrypt(str, GameManager.Instance.m_GameData.encryptKey);
+        return str;
     }
 }

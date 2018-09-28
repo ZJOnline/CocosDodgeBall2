@@ -56,7 +56,7 @@ export class UIManager {
         return ui != null;
     }
 
-    show(path: string, transition?: UI_TRANSITION, ...params: any[]): void {
+    show(path: string, pop_type?: UI_POP_TYPE, transition?: UI_TRANSITION, ...params: any[]): void {
         let ui: pop_ui = this.get_ui(path);
         if (ui.is_show) {
             return;
@@ -71,8 +71,7 @@ export class UIManager {
             //应用过渡效果
             this.applyTransitionEffect(node, transition);
             // cc.director.getScene().addChild(node);
-            console.log("add child:", node.name);
-            SceneManager.Instance.normal.addChild(node);
+            this.setUIParent(node, pop_type);
             TimerMgr.getInst().once(0, utils.gen_handler(() => {
                 //在加到场景同一帧调用界面show方法，计算位置会不准确，故统一在下一帧调用show
                 if (!ui.is_show) {
@@ -134,6 +133,24 @@ export class UIManager {
                 break;
         }
     }
+
+    setUIParent(node: cc.Node, type: UI_POP_TYPE) {
+        switch (type) {
+            case UI_POP_TYPE.Bg:
+                SceneManager.Instance.bg.addChild(node);
+                break;
+            case UI_POP_TYPE.Normal:
+                SceneManager.Instance.normal.addChild(node);
+                break;
+            case UI_POP_TYPE.Pop:
+                SceneManager.Instance.pop.addChild(node);
+                break;
+            default:
+                SceneManager.Instance.normal.addChild(node);
+                break;
+
+        }
+    }
 }
 
 type pop_ui = {
@@ -145,7 +162,10 @@ type pop_ui = {
 export const UI_CONFIG = {
     GameStartUI: "Prefabs/UI/GameStartUI",
     BackUI: "Prefabs/UI/BackUI",
-    overlay_bg:"Prefabs/UI/Overlay_bgUI",
+    overlay_bg: "Prefabs/UI/Overlay_bgUI",
+    HomeUI: "Prefabs/UI/HomeUI",
+    MainBgUI: "Prefabs/UI/MainBgUI",
+    GameOverUI: "Prefabs/UI/GameOverUI",
 }
 
 interface UI_TRANSITION {
@@ -164,6 +184,7 @@ export const enum UI_TRANSITION_TYPE {
 }
 
 export enum UI_POP_TYPE {
+    Bg = 0,
     Normal = 1,
     Pop = 2,
 }

@@ -1,9 +1,8 @@
-import { ObjectPool } from "./DataClasses";
+import * as DataClass from "./DataClasses";
 import DataTable from "./DataTable";
 
 export default class JsonReader {
 
-    objectPoolDT: ObjectPool;
     /**
      *
      */
@@ -20,7 +19,10 @@ export default class JsonReader {
 
     dataParse(json: any) {
         let array = json;
-
-        DataTable.ObjectPoolDT.ObjectPool = array["ObjectPool"];
+        //TODO:配置文件加密解密
+        DataTable.ObjectPoolDT.DataTable = array["ObjectPool"];
+        DataTable.StageDT.DataTable = array["Stage"];
+        DataTable.RefreshDT.DataTable = array["Refresh"];
+        DataTable.MonsterDT.DataTable = array["Monster"];
     }
 }

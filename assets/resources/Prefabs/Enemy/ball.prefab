@@ -77,7 +77,7 @@
     "_skewX": 0,
     "_skewY": 0,
     "_zIndex": 0,
-    "groupIndex": 0,
+    "groupIndex": 1,
     "_id": ""
   },
   {
@@ -106,7 +106,7 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
-    "_id": "abOQGcd0NJ8KXJj2b4XUij"
+    "_id": ""
   },
   {
     "__type__": "cc.CircleCollider",
@@ -123,7 +123,7 @@
       "y": 0
     },
     "_radius": 15,
-    "_id": "aftuOl3FhCsJFbUEL0wtIC"
+    "_id": ""
   },
   {
     "__type__": "a8c36W/JCJHdrn6bX8kEtHl",
@@ -133,7 +133,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "_id": "f1bOhp7GlCnLLst/lScScs"
+    "_id": ""
   },
   {
     "__type__": "b9b03eSdyRGgrQlBGXTyrc0",
@@ -143,7 +143,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "_id": "26YAzBFwFMRKgdhCLEiwV+"
+    "_id": ""
   },
   {
     "__type__": "cc.PrefabInfo",

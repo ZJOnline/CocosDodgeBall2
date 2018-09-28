@@ -19,6 +19,8 @@ export default class EnemyController extends cc.Component {
 
     state: BallState = BallState.Attack;
 
+    frozen: boolean = false;
+
     // onLoad () {}
 
     start () {
@@ -26,6 +28,9 @@ export default class EnemyController extends cc.Component {
     }
 
     update(dt) {
+        if (this.frozen) {
+            return;
+        }
         let deltaV = this.player.position.sub(this.node.position);
         switch (this.state) {
             case BallState.Attack:

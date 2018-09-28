@@ -10,17 +10,24 @@ import Tool from "../Utils/Tool";
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class PlayerController extends cc.Component {
 
     canvas: cc.Node;
 
+    canTouch = false;
+    passStage = false;
+
     targetRotation = 0;
+
+    rangeX = 297;
+    rangeY = 511;
+    rangX_s = 73;
     // onLoad () {}
 
-    start () {
+    start() {
         this.canvas = cc.find("Canvas");
         if (this.canvas) {
             this.canvas.on(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
@@ -35,6 +42,9 @@ export default class PlayerController extends cc.Component {
     }
 
     onTouchMove(event: cc.Event.EventTouch) {
+        if (!this.canTouch) {
+            return;
+        }
         let v1 = event.getLocation().sub(event.getPreviousLocation());
 
         // console.log(event.getDelta());
@@ -43,6 +53,16 @@ export default class PlayerController extends cc.Component {
         this.targetRotation = angle;
         // this.node.rotation = angle;
         let targetPos = this.node.position.add(v1);
+
+        if (Math.abs(targetPos.x) >= this.rangeX || Math.abs(targetPos.y) >= this.rangeY) {
+            if (Math.abs(targetPos.x) <= this.rangX_s && this.passStage && targetPos.y > -this.rangeY) {
+
+            }
+            else {
+                return;
+            }
+        }
+
         this.node.position = targetPos;
     }
 
@@ -52,9 +72,14 @@ export default class PlayerController extends cc.Component {
 
 
     update(dt) {
-        
+        if (!this.canTouch) {
+            return;
+        }
         this.node.rotation = Tool.lerp(this.node.rotation, this.targetRotation, 0.5);
     }
 
-    
+    resetControl() {
+        this.targetRotation = 0;
+    }
+
 }

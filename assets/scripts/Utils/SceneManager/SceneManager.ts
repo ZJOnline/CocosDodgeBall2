@@ -9,6 +9,7 @@ export default class SceneManager {
     isLoading: boolean = false;
 
     sceneObjects: cc.Node;
+    bg: cc.Node;
     normal: cc.Node;
     pop: cc.Node;
 
@@ -67,6 +68,7 @@ export default class SceneManager {
         cc.director.getScene().addChild(canvas);
         canvas.position = cc.Vec2.ZERO;
         this.sceneObjects = cc.find("SceneObjects", canvas);
+        this.bg = cc.find("BgUI", canvas);
         this.normal = cc.find("Normal", canvas);
         this.pop = cc.find("Pop", canvas);
     }

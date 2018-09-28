@@ -1,5 +1,6 @@
 import Tool from "../Utils/Tool";
 import DataTable from "../Utils/DataLoader/DataTable";
+import { handler } from "../Utils/Utils";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -41,9 +42,10 @@ export default class ObjectPool extends cc.Component {
     }
 
     init() {
-        let pools = DataTable.ObjectPoolDT.ObjectPool;
+        let pools = DataTable.ObjectPoolDT.getAllDataList();
+
         for (let i = 0; i < pools.length; i++) {
-            cc.loader.loadRes(pools[i].path + "/" + pools[i].name, (error: Error, resource: any) => {
+            cc.loader.loadRes(pools[i].path + pools[i].name, (error: Error, resource: any) => {
                 this.pool[pools[i].name] = new Array<cc.Node>();
                 for (let j = 0; j < pools[i].count; j++) {
                     let ob: cc.Node = cc.instantiate(resource);
@@ -52,6 +54,7 @@ export default class ObjectPool extends cc.Component {
                     this.pool[pools[i].name].push(ob);
                 }
                 if (i == pools.length - 1) {
+                    console.log(i);
                     this.inited = true;
                 }
             });
@@ -59,6 +62,8 @@ export default class ObjectPool extends cc.Component {
     }
 
     getObject(name: string): cc.Node {
+        if (this.pool[name] == undefined)
+            return null
         if (this.pool[name].length > 0) {
             if (this.pool[name].length > 1) {
                 let ob = this.pool[name].shift();
@@ -77,6 +82,25 @@ export default class ObjectPool extends cc.Component {
             }
         }
         return null;
+    }
+
+    showEntity(path: string, name: string, cb: handler) {
+        let ob = this.getObject(name);
+        if (ob != null) {
+            cb.exec(ob);
+            return;
+        }
+        cc.loader.loadRes(path + name, (error: Error, resource: any) => { 
+            this.pool[name] = new Array<cc.Node>();
+            let ob: cc.Node = cc.instantiate(resource);
+            ob.position = new cc.Vec2(2000, 2000);
+            ob.name = name;
+            // this.pool[name].push(ob);
+            // ob = cc.instantiate(resource);
+            // ob.position = new cc.Vec2(2000, 2000);
+            // ob.name = name;
+            cb.exec(ob);
+        })
     }
 
     returnPool(node: cc.Node) {

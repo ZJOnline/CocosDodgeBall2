@@ -8,7 +8,19 @@
   },
   "collision-matrix": [
     [
+      true,
+      null,
       true
+    ],
+    [
+      false,
+      false,
+      true
+    ],
+    [
+      true,
+      true,
+      false
     ]
   ],
   "design-resolution-height": 1334,
@@ -17,7 +29,9 @@
   "fit-height": false,
   "fit-width": true,
   "group-list": [
-    "default"
+    "default",
+    "Enemy",
+    "Player"
   ],
   "simulator-orientation": false,
   "simulator-resolution": {

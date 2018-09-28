@@ -8,6 +8,8 @@ export default class EntityLogic {
         return this.m_id;
     }
     
-    m_view: EntityView;
+    die() {
+        
+    }
 
 }

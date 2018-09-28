@@ -5,7 +5,7 @@ import EnemyBallView from "../View/EnemyBallView";
 
 export default class EnemyBallLogic extends EntityLogic {
 
-
+    m_view: EnemyBallView;
 
     /**
      *
@@ -25,6 +25,13 @@ export default class EnemyBallLogic extends EntityLogic {
         ob.position = _pos;
 
         this.m_view.rebirth();
+    }
+
+    die() {
+        super.die();
+        this.m_view.m_controller.enabled = false;
+        this.m_view.die();
+        ObjectPool.instance.returnPool(this.m_view.node);
     }
 
 }

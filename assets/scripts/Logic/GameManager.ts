@@ -1,4 +1,5 @@
-import GameData from "../Play/GameData";
+import GameData, { StorageData } from "../Play/GameData";
+import TriggerEventMgr from "../Utils/TriggerEventMgr";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -23,11 +24,15 @@ export default class GameManager extends cc.Component {
     }
     
     m_GameData: GameData;
+    m_StorageData: StorageData;
+    m_triggerEventMgr: TriggerEventMgr;
 
     onLoad() {
         GameManager._instance = this;
         cc.director.getCollisionManager().enabled = true;
         this.m_GameData = new GameData();
+        this.m_StorageData = new StorageData();
+        this.m_triggerEventMgr = new TriggerEventMgr();
     }
 
     start () {
